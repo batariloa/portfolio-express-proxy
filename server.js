@@ -18,6 +18,24 @@ app.use(cors(corsOptions));
 const API_ENDPOINT = "https://api.github.com/users/batariloa/repos?per_page=70";
 const API_KEY = process.env.GITHUB_KEY;
 
+const cacheMiddleware = (req, res, next) => {
+  const key = "__express__" + req.originalUrl || req.url;
+  const cachedBody = cache.get(key);
+  if (cachedBody) {
+    res.send(cachedBody);
+    return;
+  } else {
+    res.sendResponse = res.send;
+    res.send = (body) => {
+      cache.put(key, body, 1000 * 60 * 60); // cache for an hour
+      res.sendResponse(body);
+    };
+    next();
+  }
+};
+
+app.use(cacheMiddleware);
+
 app.use(
   "/api",
   createProxyMiddleware({
@@ -29,7 +47,8 @@ app.use(
     },
   })
 );
+const port = process.env.PORT || 3200;
 
-app.listen(process.env.PORT, () => {
-  console.log("Proxy server listening on port ", process.env.PORT);
+app.listen(port, () => {
+  console.log("Proxy server listening on port ", process.env.PORT || 3200);
 });
