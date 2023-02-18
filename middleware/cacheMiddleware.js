@@ -12,12 +12,11 @@ const cacheMiddleware = (req, res, next) => {
     console.log("Caching call...");
     res.sendResponse = res.send;
     res.send = (body) => {
-      console.log("WHAAT");
-      cache.put(key, body, 1000 * 60 * 60); // cache for an hour
+      cache.put(key, body, 1000 * 60 * 60 * 24); // cache for 24h
       res.sendResponse(body);
     };
     next();
   }
 };
 
-module.exports = cacheMiddleware;
+module.exports = { cacheMiddleware };
