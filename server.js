@@ -26,10 +26,12 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+//set API routes
 app.use(router);
 
+// Let the environment set the port, if not, use 3200
 const port = process.env.PORT || 3200;
 
 app.listen(port, () => {
-  console.log("Proxy server listening on port ", port);
+  console.log("Proxy server listening on port", port);
 });

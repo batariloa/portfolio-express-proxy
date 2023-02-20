@@ -1,7 +1,9 @@
 const fetch = require("node-fetch");
 
 //forward request to Github API
-const API_ENDPOINT = "https://api.github.com/users/batariloa/repos?per_page=50";
+const API_ENDPOINT =
+  "https://api.github.com/users/batariloa/repos?type=public&sort=created&direction=desc&per_page=9";
+
 const API_KEY = process.env.GITHUB_KEY;
 
 const getData = async (req, res, next) => {
