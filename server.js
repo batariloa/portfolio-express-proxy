@@ -35,3 +35,5 @@ const port = process.env.PORT || 3200;
 app.listen(port, () => {
   console.log("Proxy server listening on port", port);
 });
+
+module.exports = app;
